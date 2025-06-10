@@ -7,7 +7,7 @@
 
 struct Email: Equatable {
     let value: String
-    
+
     init(value: String) throws {
         guard EmailRule.validate(value) else {
             throw DomainError.invalidEmail

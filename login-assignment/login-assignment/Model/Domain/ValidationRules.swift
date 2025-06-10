@@ -24,18 +24,22 @@ struct EmailRule {
 }
 
 struct PasswordRule {
-    static func validate(_ input: String) -> Bool {
+    static func validate(_ input: String) throws -> Bool {
         guard ValidationHelper.isValidLength(text: input, min: 8, max: 20) else {
             return false
         }
-        guard ValidationHelper.hasLetter(text: input) else {
-            return false
-        }
-        guard ValidationHelper.hasNumber(text: input) else {
-            return false
-        }
-        guard ValidationHelper.hasSpecialCharacter(text: input) else {
-            return false
+        do {
+            guard try ValidationHelper.hasLetter(text: input) else {
+                return false
+            }
+            guard try ValidationHelper.hasNumber(text: input) else {
+                return false
+            }
+            guard try ValidationHelper.hasSpecialCharacter(text: input) else {
+                return false
+            }
+        } catch {
+            throw error
         }
         return true
     }
@@ -51,36 +55,48 @@ struct NicknameRule {
 }
 
 private enum ValidationHelper {
-    static func hasLetter(text: String) -> Bool {
-        let regex: Regex<Substring> = try! Regex(#"[A-Za-z]"#)
-        return text.contains(regex)
+    static func hasLetter(text: String) throws -> Bool {
+        do {
+            let regex: Regex<Substring> = try Regex(#"[A-Za-z]"#)
+            return text.contains(regex)
+        } catch {
+            throw DomainError.failedToCreateRegex
+        }
     }
-    
-    static func hasNumber(text: String) -> Bool {
-        let regex: Regex<Substring> = try! Regex(#"[\d]"#)
-        return text.contains(regex)
+
+    static func hasNumber(text: String) throws -> Bool {
+        do {
+            let regex: Regex<Substring> = try Regex(#"[\d]"#)
+            return text.contains(regex)
+        } catch {
+            throw DomainError.failedToCreateRegex
+        }
     }
-    
-    static func hasSpecialCharacter(text: String) -> Bool {
-        let regex: Regex<Substring> = try! Regex(#"[!@#$%^&*()_+-=,./<>|\?;':"]"#)
-        return text.contains(regex)
+
+    static func hasSpecialCharacter(text: String) throws -> Bool {
+        do {
+            let regex: Regex<Substring> = try Regex(#"[!@#$%^&*()_+-=,./<>|\?;':"]"#)
+            return text.contains(regex)
+        } catch {
+            throw DomainError.failedToCreateRegex
+        }
     }
-    
+
     static func isEmail(text: String) -> Bool {
         let emailPattern: String = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}$"#
         let predicate: NSPredicate = NSPredicate(format: "SELF MATCHES %@", emailPattern)
-        
+
         guard predicate.evaluate(with: text) else {
             return false
         }
-        
+
         return true
     }
-    
+
     static func isValidLength(text: String, min: Int, max: Int) -> Bool {
         return (min...max).contains(text.count)
     }
-    
+
     static func isStartWithLetter(text: String) -> Bool {
         guard let firstCharacter: Character = text.first else {
             return false

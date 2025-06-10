@@ -7,10 +7,14 @@
 
 struct Password {
     let value: String
-    
+
     init(value: String) throws {
-        guard PasswordRule.validate(value) else {
-            throw DomainError.invalidPassword
+        do {
+            guard try PasswordRule.validate(value) else {
+                throw DomainError.invalidPassword
+            }
+        } catch {
+            throw error
         }
         self.value = value
     }
