@@ -45,8 +45,7 @@ final class CoreDataStack<T: NSManagedObject> {
     
     func fetchEntityByKeyValue(_ key: CoreDataKey<T>, value: CVarArg) async throws -> T {
         try await backgroundContext.perform {
-            let entity: T = try Self.resolveEntity(key: key.name, value: value, in: self.backgroundContext)
-            return entity
+            return try Self.resolveEntity(key: key.name, value: value, in: self.backgroundContext)
         }
     }
     
@@ -55,6 +54,12 @@ final class CoreDataStack<T: NSManagedObject> {
             let entity: T = try Self.resolveEntity(key: key.name, value: value, in: self.backgroundContext)
             self.backgroundContext.delete(entity)
             try self.backgroundContext.save()
+        }
+    }
+    
+    func checkEntityExists(_ key: CoreDataKey<T>, value: CVarArg) async throws -> Bool {
+        try await backgroundContext.perform {
+            return try Self.entityExists(key: key.name, value: value, in: self.backgroundContext)
         }
     }
     
@@ -74,5 +79,16 @@ extension CoreDataStack {
         }
         
         return result
+    }
+    
+    static func entityExists(key: String, value: CVarArg, in context: NSManagedObjectContext) throws -> Bool {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: T.self))
+        request.predicate = NSPredicate(format: "%K == %@", key, value)
+        request.fetchLimit = 1
+        request.includesPropertyValues = false
+        request.includesSubentities = false
+
+        let count = try context.count(for: request)
+        return count > 0
     }
 }

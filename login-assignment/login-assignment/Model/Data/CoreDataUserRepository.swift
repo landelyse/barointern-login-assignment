@@ -32,13 +32,11 @@ final class CoreDataUserRepository: UserRepository {
     }
     
     func deleteByUUID(_ uuid: UUID) async throws {
-        <#code#>
+        try await coreDataStack.deleteEntityById(.uuid, value: uuid as CVarArg)
     }
     
-    func isEmailExists(_ email: String) async throws -> Bool {
-        <#code#>
+    func isEmailExists(_ email: Email) async throws -> Bool {
+        try await coreDataStack.checkEntityExists(.email, value: email.value as CVarArg)
     }
-    
-
 }
 
