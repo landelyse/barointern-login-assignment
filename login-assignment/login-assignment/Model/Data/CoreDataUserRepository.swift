@@ -29,7 +29,6 @@ final class CoreDataUserRepository: UserRepository {
             value: email.value as CVarArg
         )
         return try UserMapper.mapEntityToModel(entity)
-        
     }
     
     func deleteByUUID(_ uuid: UUID) async throws {
@@ -43,25 +42,3 @@ final class CoreDataUserRepository: UserRepository {
 
 }
 
-enum UserMapper {
-    static func mapEntityToModel(_ entity: UserEntity) throws -> User {
-        guard let email = entity.email,
-              let nickname = entity.nickname,
-              let password = entity.password,
-              let uuid = entity.uuid
-        else {
-            throw DataError.failedToMap
-        }
-        
-        let emailInstance: Email = try Email(value: email)
-        let passwordInstance: Password = try Password(value: password)
-        let nicknameInstance: Nickname = try Nickname(value: nickname)
-        
-        return User(
-            uuid: uuid,
-            email: emailInstance,
-            password: passwordInstance,
-            nickname: nicknameInstance
-        )
-    }
-}
