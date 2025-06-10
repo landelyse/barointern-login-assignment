@@ -12,4 +12,8 @@ struct User {
     let email: Email
     let password: Password
     let nickname: Nickname
+
+    func isCorrectPassword(_ input: Password) -> Bool {
+        return self.password == input
+    }
 }
