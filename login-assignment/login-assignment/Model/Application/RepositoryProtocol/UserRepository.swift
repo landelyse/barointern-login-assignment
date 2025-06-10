@@ -12,5 +12,4 @@ protocol UserRepository {
     func searchByEmail(_ email: Email) async throws -> User
     func deleteByUUID(_ uuid: UUID) async throws
     func isEmailExists(_ email: String) async throws -> Bool
-    func isCorrectPassword(user: User, password: Password) async throws -> Bool
 }
