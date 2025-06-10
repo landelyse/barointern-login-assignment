@@ -11,7 +11,7 @@ enum UseCaseError: LocalizedError {
     case emailAlreadyExists
     case failedToSignIn
     case undefinedAction
-    
+
     var errorDescription: String? {
         switch self {
         case .emailAlreadyExists: "이미 존재하는 이메일입니다."

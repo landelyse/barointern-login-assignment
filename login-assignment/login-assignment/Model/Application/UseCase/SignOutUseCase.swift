@@ -7,11 +7,11 @@
 
 final class SignOutUseCase {
     private let preferenceRepository: PreferenceRepository
-    
+
     init(preferenceRepository: PreferenceRepository) {
         self.preferenceRepository = preferenceRepository
     }
-    
+
     func execute() {
         preferenceRepository.deleteSignedInUserInfo()
     }
