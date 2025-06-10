@@ -75,6 +75,7 @@
 <img width="1002" alt="Screenshot 2025-06-10 at 04 56 27" src="https://github.com/user-attachments/assets/5c100eea-1af5-46f9-9aeb-2df83071e9c0" />
 
 ### Class Diagram
-<img width="1002" alt="Screenshot 2025-06-10 at 04 58 00" src="https://github.com/user-attachments/assets/2110530c-9ff1-44c7-ad0d-c4e68adbfd24" />
+<!-- <img width="1002" alt="Screenshot 2025-06-10 at 04 58 00" src="https://github.com/user-attachments/assets/2110530c-9ff1-44c7-ad0d-c4e68adbfd24" /> -->
+<img width="1002" alt="Screenshot 2025-06-10 at 13 17 59" src="https://github.com/user-attachments/assets/3e9655ae-f2eb-497b-b569-625d442f89a9" />
 
 
