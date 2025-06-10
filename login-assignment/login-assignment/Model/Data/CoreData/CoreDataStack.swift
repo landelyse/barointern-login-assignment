@@ -18,6 +18,7 @@ final class CoreDataStack<T: NSManagedObject> {
         setupContext()
     }
     
+    @discardableResult
     func createEntity() async throws -> T {
         try await backgroundContext.perform {
             let entity: T = T(context: self.backgroundContext)
@@ -32,16 +33,26 @@ final class CoreDataStack<T: NSManagedObject> {
         }
     }
     
-    func fetchEntityById(_ id: UUID) async throws -> T {
+    @discardableResult
+    func createEntity(_ configure: @escaping (T) -> Void) async throws -> T {
         try await backgroundContext.perform {
-            let entity: T = try Self.resolveEntity(id: id, in: self.backgroundContext)
+            let entity: T = T(context: self.backgroundContext)
+            configure(entity)
+            try self.backgroundContext.save()
             return entity
         }
     }
     
-    func deleteEntityById(_ id: UUID) async throws {
+    func fetchEntityByKeyValue(_ key: CoreDataKey<T>, value: CVarArg) async throws -> T {
         try await backgroundContext.perform {
-            let entity: NSManagedObject = try Self.resolveEntity(id: id, in: self.backgroundContext)
+            let entity: T = try Self.resolveEntity(key: key.name, value: value, in: self.backgroundContext)
+            return entity
+        }
+    }
+    
+    func deleteEntityById(_ key: CoreDataKey<T>, value: CVarArg) async throws {
+        try await backgroundContext.perform {
+            let entity: T = try Self.resolveEntity(key: key.name, value: value, in: self.backgroundContext)
             self.backgroundContext.delete(entity)
             try self.backgroundContext.save()
         }
@@ -53,9 +64,9 @@ final class CoreDataStack<T: NSManagedObject> {
 }
 
 extension CoreDataStack {
-    static func resolveEntity(id: UUID, in context: NSManagedObjectContext) throws -> T {
+    static func resolveEntity(key: String, value: CVarArg, in context: NSManagedObjectContext) throws -> T {
         let request = NSFetchRequest<T>(entityName: String(describing: T.self))
-        request.predicate = NSPredicate(format: "uuid == %@", id as CVarArg)
+        request.predicate = NSPredicate(format: "%K == %@", key, value)
         request.fetchLimit = 1
         
         guard let result = try context.fetch(request).first else {
