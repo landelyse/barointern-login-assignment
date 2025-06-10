@@ -5,7 +5,7 @@
 //  Created by 박진홍 on 6/10/25.
 //
 
-struct SignUpUseCase {
+final class SignUpUseCase {
     private let userRepository: UserRepository
     
     init(userRepository: UserRepository) {
