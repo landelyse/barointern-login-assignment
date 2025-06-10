@@ -8,7 +8,8 @@
 import Foundation
 
 protocol UserRepository {
-    func save(user: User) throws
-    func search(uuid: UUID) throws -> User
-    func delete(uuid: UUID) throws
+    func save(_ user: User) async throws
+    func searchByUUID(_ uuid: UUID) async throws -> User
+    func deleteByUUID(_ uuid: UUID) async throws
+    func isEmailExists(_ email: String) async throws -> Bool
 }
