@@ -5,7 +5,7 @@
 //  Created by 박진홍 on 6/10/25.
 //
 
-struct Password {
+struct Password: Equatable {
     let value: String
 
     init(value: String) throws {

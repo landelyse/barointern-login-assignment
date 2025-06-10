@@ -9,8 +9,6 @@ import Foundation
 
 protocol PreferenceRepository {
     func hasSignedInBefore() -> Bool
-    func saveSignedInUserName(_ nickname: String)
-    func saveSignedInUserUUID(_ uuid: UUID)
-    func fetchSignedInUserName() throws -> String
-    func fetchSignedInUserUUID() -> UUID
+    func saveSignedInUserInfo(_ info: SignedInDto)
+    func fetchSignedInUserInfo() throws -> SignedInDto
 }

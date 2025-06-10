@@ -23,8 +23,4 @@ enum UserFactory {
         return user
     }
 }
-enum SignedInUserInfoFactory {
-    static func createSignedInUserInfo(by user: User) -> SignedInDto {
-        return SignedInDto(uuid: user.uuid, nickname: user.nickname.value)
-    }
-}
+
