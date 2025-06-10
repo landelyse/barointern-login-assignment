@@ -11,4 +11,5 @@ protocol PreferenceRepository {
     func hasSignedInBefore() -> Bool
     func saveSignedInUserInfo(_ info: SignedInDto)
     func fetchSignedInUserInfo() throws -> SignedInDto
+    func deleteSignedInUserInfo()
 }
