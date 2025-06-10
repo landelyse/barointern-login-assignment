@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct UserFactory {
-    static func createUser(by input: SignUpDto) throws -> User {
+enum UserFactory {
+    static func create(by input: SignUpDto) throws -> User {
         let email: Email = try Email(value: input.email)
         let password: Password = try Password(value: input.password)
         let nickname: Nickname = try Nickname(value: input.nickname)
@@ -21,5 +21,10 @@ struct UserFactory {
         )
         
         return user
+    }
+}
+enum SignedInUserInfoFactory {
+    static func createSignedInUserInfo(by user: User) -> SignedInDto {
+        return SignedInDto(uuid: user.uuid, nickname: user.nickname.value)
     }
 }
