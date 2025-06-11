@@ -9,17 +9,17 @@ import Foundation
 
 final class UserDefaultsPreferenceRepository: PreferenceRepository {
     let userDefaults: UserDefaults = UserDefaults.standard
-    
+
     func hasSignedInBefore() -> Bool {
         userDefaults.bool(forKey: PreferenceKey.isSignedIn)
     }
-    
+
     func saveSignedInUserInfo(_ info: SignedInDto) {
         userDefaults.set(true, forKey: PreferenceKey.isSignedIn)
         userDefaults.set(info.uuid.uuidString, forKey: PreferenceKey.id)
         userDefaults.set(info.nickname, forKey: PreferenceKey.nickname)
     }
-    
+
     func fetchSignedInUserInfo() throws -> SignedInDto {
         guard let uuidString: String = userDefaults.string(forKey: PreferenceKey.id),
               let uuid: UUID = UUID(uuidString: uuidString),
@@ -27,10 +27,10 @@ final class UserDefaultsPreferenceRepository: PreferenceRepository {
         else {
             throw DataError.failedToFetchSignedInInfo
         }
-        
+
         return SignedInDto(uuid: uuid, nickname: nickname)
     }
-    
+
     func deleteSignedInUserInfo() {
         userDefaults.removeObject(forKey: PreferenceKey.isSignedIn)
         userDefaults.removeObject(forKey: PreferenceKey.id)
