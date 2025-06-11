@@ -8,7 +8,7 @@
 import UIKit
 
 final class StartView: UIView {
-    let startButtonAction: (() -> Void)
+    private let startButtonAction: (() -> Void)
     
     private let coloredBox: UIView = {
         let box = UIView()
