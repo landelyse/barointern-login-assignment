@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension UserEntity {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<UserEntity> {

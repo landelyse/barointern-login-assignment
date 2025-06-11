@@ -9,11 +9,11 @@ import Foundation
 
 final class CoreDataUserRepository: UserRepository {
     private let coreDataStack: CoreDataStack<UserEntity>
-    
+
     init(coreDataStack: CoreDataStack<UserEntity>) {
         self.coreDataStack = coreDataStack
     }
-    
+
     func save(_ user: User) async throws {
         try await coreDataStack.createEntity { entity in
             entity.uuid = user.uuid
@@ -22,7 +22,7 @@ final class CoreDataUserRepository: UserRepository {
             entity.nickname = user.nickname.value
         }
     }
-    
+
     func searchByEmail(_ email: Email ) async throws -> User {
         let entity: UserEntity = try await coreDataStack.fetchEntityByKeyValue(
             .email,
@@ -30,13 +30,12 @@ final class CoreDataUserRepository: UserRepository {
         )
         return try UserMapper.mapEntityToModel(entity)
     }
-    
+
     func deleteByUUID(_ uuid: UUID) async throws {
         try await coreDataStack.deleteEntityByKeyValue(.uuid, value: uuid as CVarArg)
     }
-    
+
     func isEmailExists(_ email: Email) async throws -> Bool {
         try await coreDataStack.checkEntityExists(.email, value: email.value as CVarArg)
     }
 }
-

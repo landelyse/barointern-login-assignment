@@ -14,11 +14,11 @@ enum UserMapper {
         else {
             throw DataError.failedToMap
         }
-        
+
         let emailInstance: Email = try Email(value: email)
         let passwordInstance: Password = try Password(value: password)
         let nicknameInstance: Nickname = try Nickname(value: nickname)
-        
+
         return User(
             uuid: uuid,
             email: emailInstance,

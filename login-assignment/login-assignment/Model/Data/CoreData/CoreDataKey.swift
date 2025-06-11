@@ -12,8 +12,8 @@ struct CoreDataKey<T: NSManagedObject> {
 }
 
 extension CoreDataKey where T == UserEntity {
-    static let uuid = CoreDataKey<UserEntity>(name:"uuid")
-    static let email = CoreDataKey<UserEntity>(name:"email")
-    static let password = CoreDataKey<UserEntity>(name:"password")
-    static let nickname = CoreDataKey<UserEntity>(name:"nickname")
+    static let uuid = CoreDataKey<UserEntity>(name: "uuid")
+    static let email = CoreDataKey<UserEntity>(name: "email")
+    static let password = CoreDataKey<UserEntity>(name: "password")
+    static let nickname = CoreDataKey<UserEntity>(name: "nickname")
 }
