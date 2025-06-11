@@ -10,18 +10,27 @@ import Foundation
 
 @MainActor
 final class StartViewModel {
-    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    private let navigationUseCase: StartNavigationUseCase
     
-    private let navigateSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
-    var navigatePublisher: AnyPublisher<Void, Never> {
-        navigateSubject.eraseToAnyPublisher()
+    private let navigateToWelcomeSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
+    private let navigateToSignInSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
+    
+    var navigateToWelcomePublisher: AnyPublisher<Void, Never> {
+        navigateToWelcomeSubject.eraseToAnyPublisher()
+    }
+    var navigateToSignInPublisher: AnyPublisher<Void, Never> {
+        navigateToSignInSubject.eraseToAnyPublisher()
     }
     
-    init() {
-        
+    init(navigationUseCase: StartNavigationUseCase) {
+        self.navigationUseCase = navigationUseCase
     }
     
     func startButtonTapped() {
-        navigateSubject.send(())
+        if navigationUseCase.execute() {
+            navigateToWelcomeSubject.send(())
+        } else {
+            navigateToSignInSubject.send(())
+        }
     }
 }
