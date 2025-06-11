@@ -11,5 +11,5 @@ protocol UserRepository {
     func save(_ user: User) async throws
     func searchByEmail(_ email: Email) async throws -> User
     func deleteByUUID(_ uuid: UUID) async throws
-    func isEmailExists(_ email: String) async throws -> Bool
+    func isEmailExists(_ email: Email) async throws -> Bool
 }

@@ -15,7 +15,7 @@ final class SignUpUseCase {
     func execute(user: SignUpDto) async throws {
         let user: User = try UserFactory.create(by: user)
 
-        if try await userRepository.isEmailExists(user.email.value) {
+        if try await userRepository.isEmailExists(user.email) {
             throw UseCaseError.emailAlreadyExists
         }
 
