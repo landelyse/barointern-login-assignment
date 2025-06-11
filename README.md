@@ -8,7 +8,17 @@
 - TechStack
   - Language: Swift
   - Architecture: MVVM
-  - Tools: Xcode, SwiftLint
+  - Tools: Xcode, SwiftLint, Stitch, Figma
+
+### Design
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/c6d5750c-c1b3-4964-9d4b-068c4c3cdf53" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/0d1315f9-2fc1-4b0e-a186-13f6d1b295b6" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/7d5cb1a2-64de-4496-8342-0c3dc6524225" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/936146fb-ff86-4734-a2bd-efcb15205ee9" width="250"/></td>
+  </tr>
+</table>
 
 ### Functional Requirement
 <details>
@@ -75,7 +85,9 @@
 <img width="1002" alt="Screenshot 2025-06-10 at 04 56 27" src="https://github.com/user-attachments/assets/5c100eea-1af5-46f9-9aeb-2df83071e9c0" />
 
 ### Class Diagram
-<!-- <img width="1002" alt="Screenshot 2025-06-10 at 04 58 00" src="https://github.com/user-attachments/assets/2110530c-9ff1-44c7-ad0d-c4e68adbfd24" /> -->
-<img width="1002" alt="Screenshot 2025-06-10 at 13 17 59" src="https://github.com/user-attachments/assets/3e9655ae-f2eb-497b-b569-625d442f89a9" />
+<!-- <img width="1002" alt="Screenshot 2025-06-10 at 04 58 00" src="https://github.com/user-attachments/assets/2110530c-9ff1-44c7-ad0d-c4e68adbfd24" />
+<img width="1002" alt="Screenshot 2025-06-10 at 13 17 59" src="https://github.com/user-attachments/assets/3e9655ae-f2eb-497b-b569-625d442f89a9" /> -->
+![바로인턴+04  직무과제  2025-06-11 10 33 51 excalidraw](https://github.com/user-attachments/assets/9cd80308-33d6-42ee-9caf-df84e2343606)
+
 
 
