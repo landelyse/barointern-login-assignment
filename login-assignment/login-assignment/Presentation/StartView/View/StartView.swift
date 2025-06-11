@@ -8,7 +8,7 @@
 import UIKit
 
 final class StartView: UIView {
-    private let startButtonAction: (() -> Void)
+    var onStartButtonTapped: (() -> Void)?
     
     private let coloredBox: UIView = {
         let box = UIView()
@@ -43,8 +43,8 @@ final class StartView: UIView {
         return button
     }()
     
-    init(frame: CGRect = .zero, action: @escaping () -> Void) {
-        self.startButtonAction = action
+    
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
@@ -100,7 +100,7 @@ final class StartView: UIView {
     
     private func setupButtonAction() {
         let action: UIAction = UIAction { [weak self] _ in
-            self?.startButtonAction()
+            self?.onStartButtonTapped?()
         }
         startButton.addAction(action, for: .touchUpInside)
     }
