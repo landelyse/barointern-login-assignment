@@ -18,13 +18,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene: UIWindowScene = (scene as? UIWindowScene) else { return }
         let window: UIWindow = UIWindow(windowScene: windowScene)
-        
+
         let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
-        let startNavigationUseCase: StartNavigationUseCase = StartNavigationUseCase(preferenceRepository: preferenceRepository)
+        let startNavigationUseCase: StartNavigationUseCase = StartNavigationUseCase(
+            preferenceRepository: preferenceRepository
+        )
         let startViewModel: StartViewModel = StartViewModel(navigationUseCase: startNavigationUseCase)
         let startViewController: StartViewController = StartViewController(viewModel: startViewModel)
         let navigation: UINavigationController = UINavigationController(rootViewController: startViewController)
-        
+
         window.rootViewController = navigation
         window.makeKeyAndVisible()
         self.window = window

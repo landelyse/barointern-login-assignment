@@ -7,11 +7,11 @@
 
 final class StartNavigationUseCase {
     private let preferenceRepository: PreferenceRepository
-    
+
     init(preferenceRepository: PreferenceRepository) {
         self.preferenceRepository = preferenceRepository
     }
-    
+
     func execute() -> Bool {
         preferenceRepository.hasSignedInBefore()
     }
