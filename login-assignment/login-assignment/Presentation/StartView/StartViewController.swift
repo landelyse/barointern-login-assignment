@@ -11,7 +11,7 @@ import Combine
 final class StartViewController: UIViewController {
     private let viewModel: StartViewModel
     private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
-    private var contentView: StartView!
+    private var contentView: StartUIView!
     
     init(viewModel: StartViewModel) {
         self.viewModel = viewModel
@@ -23,7 +23,7 @@ final class StartViewController: UIViewController {
     }
     
     override func loadView() {
-        contentView = StartView()
+        contentView = StartUIView()
         view = contentView
     }
     

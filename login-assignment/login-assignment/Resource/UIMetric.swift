@@ -15,7 +15,7 @@ enum UIMetric {
     }
     
     enum CornerRadius {
-        static let button: CGFloat = 50
+        static let button: CGFloat = 25
         static let textField: CGFloat = 15
     }
     
@@ -28,7 +28,7 @@ enum UIMetric {
     }
     
     enum ViewHeight {
-        static let boxHeight: CGFloat = 250
-        static let buttonHeight: CGFloat = 150
+        static let boxHeight: CGFloat = 400
+        static let buttonHeight: CGFloat = 75
     }
 }

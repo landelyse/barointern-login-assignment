@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIColor {
-    static let boxColor = UIColor(red: 243, green: 221, blue: 203, alpha: 1)
-    static let buttonColor = UIColor(red: 235, green: 199, blue: 173, alpha: 1)
-    static let accentTextColor = UIColor(red: 143, green: 112, blue: 87, alpha: 1)
+    static let boxColor = UIColor(red: 243 / 255, green: 221/255, blue: 203 / 255, alpha: 1)
+    static let buttonColor = UIColor(red: 235  / 255, green: 199 / 255, blue: 173 / 255, alpha: 1)
+    static let accentTextColor = UIColor(red: 143 / 255, green: 112 / 255, blue: 87 / 255, alpha: 1)
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class StartView: UIView {
+final class StartUIView: UIView {
     var onStartButtonTapped: (() -> Void)?
     
     private let coloredBox: UIView = {
@@ -37,6 +37,7 @@ final class StartView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("Start", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: UIMetric.FontSize.body, weight: .bold)
         button.titleLabel?.font = .systemFont(ofSize: UIMetric.FontSize.body)
         button.backgroundColor = .buttonColor
         button.layer.cornerRadius = UIMetric.CornerRadius.button
@@ -78,7 +79,7 @@ final class StartView: UIView {
         }
         
         NSLayoutConstraint.activate([
-            coloredBox.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            coloredBox.topAnchor.constraint(equalTo: self.topAnchor),
             coloredBox.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             coloredBox.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             coloredBox.heightAnchor.constraint(equalToConstant: UIMetric.ViewHeight.boxHeight),
