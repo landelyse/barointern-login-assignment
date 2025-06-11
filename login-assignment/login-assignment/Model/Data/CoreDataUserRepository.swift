@@ -32,7 +32,7 @@ final class CoreDataUserRepository: UserRepository {
     }
     
     func deleteByUUID(_ uuid: UUID) async throws {
-        try await coreDataStack.deleteEntityById(.uuid, value: uuid as CVarArg)
+        try await coreDataStack.deleteEntityByKeyValue(.uuid, value: uuid as CVarArg)
     }
     
     func isEmailExists(_ email: Email) async throws -> Bool {

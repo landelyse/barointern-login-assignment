@@ -49,7 +49,7 @@ final class CoreDataStack<T: NSManagedObject> {
         }
     }
     
-    func deleteEntityById(_ key: CoreDataKey<T>, value: CVarArg) async throws {
+    func deleteEntityByKeyValue(_ key: CoreDataKey<T>, value: CVarArg) async throws {
         try await backgroundContext.perform {
             let entity: T = try Self.resolveEntity(key: key.name, value: value, in: self.backgroundContext)
             self.backgroundContext.delete(entity)
