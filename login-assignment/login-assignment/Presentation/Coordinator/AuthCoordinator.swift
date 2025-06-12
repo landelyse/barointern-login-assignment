@@ -94,7 +94,7 @@ final class AuthCoordinator: Coordinator, Finishable {
         viewModel.signOutPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
-                self?.navigationController.popViewController(animated: true)
+                self?.navigationController.popToRootViewController(animated: true)
             }
             .store(in: &viewController.cancellables)
 
@@ -102,7 +102,7 @@ final class AuthCoordinator: Coordinator, Finishable {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 switch result {
-                case .success: self?.navigationController.popViewController(animated: true)
+                case .success: self?.navigationController.popToRootViewController(animated: true)
                 case .failure: break // TODO: error 처리
                 }
             }
