@@ -19,9 +19,7 @@ struct EmailRule {
         guard ValidationHelper.isStartWithLetter(text: localPart) else {
             return false
         }
-        guard ValidationHelper.isLowerCase(text: localPart) else {
-            return false
-        }
+        
         return true
     }
 }
@@ -84,18 +82,9 @@ private enum ValidationHelper {
             throw DomainError.failedToCreateRegex
         }
     }
-    
-    static func isLowerCase(text: String) -> Bool {
-        do {
-            let regex: Regex<Substring> = try Regex(#"^[a-z]+$"#)
-            return text.contains(regex)
-        } catch {
-            return false
-        }
-    }
 
     static func isEmail(text: String) -> Bool {
-        let emailPattern: String = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}$"#
+        let emailPattern: String = #"^[a-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}$"#
         let predicate: NSPredicate = NSPredicate(format: "SELF MATCHES %@", emailPattern)
 
         guard predicate.evaluate(with: text) else {
