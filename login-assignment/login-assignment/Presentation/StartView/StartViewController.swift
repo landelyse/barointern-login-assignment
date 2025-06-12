@@ -10,7 +10,7 @@ import Combine
 
 final class StartViewController: UIViewController {
     private let viewModel: StartViewModel
-    private var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
     private var contentView: StartUIView!
 
     init(viewModel: StartViewModel) {
@@ -29,28 +29,7 @@ final class StartViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBindings()
         setupViewCallbacks()
-    }
-
-    private func setupBindings() {
-        // ViewModel에 @MainActor가 있지만 메인스레드임을 명시하고 ViewModel의 변경에 대응하지 못하는 일이 없도록 recieve
-        viewModel.navigateToWelcomePublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self = self else { return }
-                self.navigateToWelcome()
-            }
-            .store(in: &cancellables)
-
-        viewModel.navigateToSignInPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self = self else { return }
-                self.navigateToSignIn()
-            }
-            .store(in: &cancellables)
-
     }
 
     private func setupViewCallbacks() {
@@ -58,16 +37,5 @@ final class StartViewController: UIViewController {
             guard let self = self else { return }
             self.viewModel.startButtonTapped()
         }
-    }
-
-    // TODO: - View 구현 후 연결
-    private func navigateToWelcome() {
-        print("WelcomeView로 이동")
-        print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
-    }
-
-    private func navigateToSignIn() {
-        print("SignInView로 이동")
-        print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
     }
 }
