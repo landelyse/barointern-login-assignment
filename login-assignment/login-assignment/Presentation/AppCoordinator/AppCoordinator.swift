@@ -11,25 +11,25 @@ import UIKit
 final class AppCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var  navigationController: UINavigationController
-    
+
     private let window: UIWindow
-    
+
     init(window: UIWindow) {
         self.window = window
         self.navigationController = UINavigationController()
-        
+
         setupWindow()
     }
-    
+
     func start() {
         showStartFlow()
     }
-    
+
     private func setupWindow() {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
-    
+
     private func showStartFlow() {
         let repository: PreferenceRepository = UserDefaultsPreferenceRepository()
         let useCase: StartNavigationUseCase = StartNavigationUseCase(preferenceRepository: repository)
@@ -37,7 +37,7 @@ final class AppCoordinator: Coordinator {
             navigationController: navigationController,
             useCase: useCase
         )
-        
+
         startCoordinator.isCompleted = { [weak self, weak startCoordinator] result in
             guard let coordinator = startCoordinator,
                   let self = self
@@ -47,17 +47,17 @@ final class AppCoordinator: Coordinator {
             case .signedIn: self.showWelcomeFlow()
             case .signedOut: self.showSignInFlow()
             }
-            
+
         }
-        
+
         coordinate(to: startCoordinator)
     }
-    
+
     private func showSignInFlow() {
-        
+
     }
-    
+
     private func showWelcomeFlow() {
-        
+
     }
 }

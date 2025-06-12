@@ -13,12 +13,12 @@ final class StartCoordinator: Coordinator, Finishable {
         case signedIn
         case signedOut
     }
-    
+
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     var isCompleted: ((Result) -> Void)?
     private let useCase: StartNavigationUseCase
-    
+
     init(
         navigationController: UINavigationController,
         useCase: StartNavigationUseCase
@@ -26,18 +26,18 @@ final class StartCoordinator: Coordinator, Finishable {
         self.navigationController = navigationController
         self.useCase = useCase
     }
-    
+
     func start() {
         let viewModel: StartViewModel = StartViewModel(navigationUseCase: useCase)
         let viewController: StartViewController = StartViewController(viewModel: viewModel)
-        
+
         viewModel.navigateToSignInPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 self?.showSignIn()
             }
             .store(in: &viewController.cancellables)
-        
+
         viewModel.navigateToWelcomePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
@@ -46,11 +46,11 @@ final class StartCoordinator: Coordinator, Finishable {
             .store(in: &viewController.cancellables)
         navigationController.pushViewController(viewController, animated: true)
     }
-    
+
     func showSignIn() {
         print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
     }
-    
+
     func showWelcome() {
         print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
     }
