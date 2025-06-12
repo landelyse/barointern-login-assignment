@@ -13,7 +13,8 @@ final class SignInUseCase {
         self.userRepository = userRepository
         self.preferenceRepository = preferenceRepository
     }
-
+    
+    @discardableResult
     func execute(email: String, password: String) async throws -> Bool {
         let email: Email = try Email(value: email)
         let password: Password = try Password(value: password)
