@@ -18,10 +18,10 @@ final class SignInViewModel {
 
     private let signInButtonSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
     private let signInResultSubject: PassthroughSubject<Result<Void, Error>, Never> = {
-        PassthroughSubject<Result<Void, Error>, Never>
+        PassthroughSubject<Result<Void, Error>, Never>()
     }()
     private let navigateToSignUpSubject: PassthroughSubject<Void, Never> = {
-        PassthroughSubject<Void, Never>
+        PassthroughSubject<Void, Never>()
     }()
 
     var signInButtonPublisher: AnyPublisher<Void, Never> {
