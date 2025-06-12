@@ -38,26 +38,13 @@ final class AppCoordinator: Coordinator {
             useCase: useCase
         )
 
-        startCoordinator.isCompleted = { [weak self, weak startCoordinator] result in
+        startCoordinator.isCompleted = { [weak self, weak startCoordinator] in
             guard let coordinator = startCoordinator,
                   let self = self
             else { return }
             self.removeChildCoordinator(coordinator)
-            switch result {
-            case .signedIn: self.showWelcomeFlow()
-            case .signedOut: self.showSignInFlow()
-            }
-
         }
 
         coordinate(to: startCoordinator)
-    }
-
-    private func showSignInFlow() {
-
-    }
-
-    private func showWelcomeFlow() {
-
     }
 }

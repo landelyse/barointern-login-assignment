@@ -19,8 +19,7 @@ protocol Coordinator: AnyObject {
 
 @MainActor
 protocol Finishable: AnyObject {
-    associatedtype Result = Void
-    var isCompleted: ((Result) -> Void)? { get set }
+    var isCompleted: (() -> Void)? { get set }
 }
 
 extension Coordinator {

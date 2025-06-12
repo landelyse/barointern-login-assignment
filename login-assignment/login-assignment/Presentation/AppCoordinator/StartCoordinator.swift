@@ -9,14 +9,9 @@ import UIKit
 
 @MainActor
 final class StartCoordinator: Coordinator, Finishable {
-    enum Result {
-        case signedIn
-        case signedOut
-    }
-
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
-    var isCompleted: ((Result) -> Void)?
+    var isCompleted: (() -> Void)?
     private let useCase: StartNavigationUseCase
 
     init(
