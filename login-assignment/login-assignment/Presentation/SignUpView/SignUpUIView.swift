@@ -135,11 +135,13 @@ final class SignUpUIView: UIView {
         }
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: UIMetric.Padding.regular),
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: UIMetric.Padding.large),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIMetric.Padding.large),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIMetric.Padding.large),
 
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: UIMetric.Padding.large),
-            descriptionLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: UIMetric.Padding.regular),
+            descriptionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIMetric.Padding.large),
+            descriptionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIMetric.Padding.large),
 
             emailTextField.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: UIMetric.Padding.large),
             emailTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIMetric.Padding.regular),

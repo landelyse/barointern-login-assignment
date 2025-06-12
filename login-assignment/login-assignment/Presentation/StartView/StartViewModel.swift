@@ -28,9 +28,9 @@ final class StartViewModel {
 
     func startButtonTapped() {
         if navigationUseCase.execute() {
-            navigateToWelcomeSubject.send(())
+            navigateToWelcomeSubject.send()
         } else {
-            navigateToSignInSubject.send(())
+            navigateToSignInSubject.send()
         }
     }
 }

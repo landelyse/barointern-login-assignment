@@ -49,7 +49,6 @@ final class AuthCoordinator: Coordinator, Finishable {
     }
 
     func showSignUp() {
-        print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
         let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
         let useCase: SignUpUseCase = SignUpUseCase(userRepository: userRepository)
         let viewModel: SignUpViewModel = SignUpViewModel(useCase: useCase)
@@ -60,8 +59,7 @@ final class AuthCoordinator: Coordinator, Finishable {
             .sink {  [weak self] result in
                 switch result {
                 case .success: self?.navigationController.popViewController(animated: true)
-                case .failure:
-                    print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
+                case .failure: break // TODO: error 처리
                 }
             }
             .store(in: &viewController.cancellables)
@@ -76,6 +74,40 @@ final class AuthCoordinator: Coordinator, Finishable {
     }
 
     func showWelcome() {
-        print("welcome view 미구현")
+        let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
+        let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
+        let deleteUserUseCase: DeleteUserUseCase = DeleteUserUseCase(
+            userRepository: userRepository,
+            preferenceRepository: preferenceRepository
+        )
+        let signOutUseCase: SignOutUseCase = SignOutUseCase(
+            preferenceRepository: preferenceRepository
+        )
+        let viewModel: WelcomeViewModel = WelcomeViewModel(
+            signOutUseCase: signOutUseCase,
+            deleteUserUseCase: deleteUserUseCase
+        )
+        let viewController: WelcomeViewController = WelcomeViewController(
+            viewModel: viewModel
+        )
+
+        viewModel.signOutPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.navigationController.popViewController(animated: true)
+            }
+            .store(in: &viewController.cancellables)
+
+        viewModel.deleteUserResultPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                switch result {
+                case .success: self?.navigationController.popViewController(animated: true)
+                case .failure: break // TODO: error 처리
+                }
+            }
+            .store(in: &viewController.cancellables)
+
+        navigationController.pushViewController(viewController, animated: true)
     }
 }
