@@ -12,7 +12,7 @@ final class WelcomeViewModel {
     private let signOutUseCase: SignOutUseCase
     private let deleteUserUseCase: DeleteUserUseCase
     private var cancellables: Set<AnyCancellable> = []
-    
+
     private let signOutSubject: PassthroughSubject<Void, Never> = {
         PassthroughSubject<Void, Never>()
     }()
@@ -22,8 +22,7 @@ final class WelcomeViewModel {
     private let deleteUserResultSubject: PassthroughSubject<Result<Void, Error>, Never> = {
         PassthroughSubject<Result<Void, Error>, Never>()
     }()
-    
-    
+
     var signOutPublisher: AnyPublisher<Void, Never> {
         signOutSubject.eraseToAnyPublisher()
     }
@@ -33,7 +32,7 @@ final class WelcomeViewModel {
     var deleteUserPublisher: AnyPublisher<Void, Never> {
         deleteUserSubject.eraseToAnyPublisher()
     }
-    
+
     init(signOutUseCase: SignOutUseCase,
          deleteUserUseCase: DeleteUserUseCase
     ) {
@@ -41,29 +40,29 @@ final class WelcomeViewModel {
         self.deleteUserUseCase = deleteUserUseCase
         bind()
     }
-    
+
     func signOutButtonTapped() {
         signOutSubject.send()
     }
-    
+
     func deleteButtonTapped() {
         deleteUserSubject.send()
     }
-    
+
     private func bind() {
         signOutSubject
             .sink {  [weak self] in
                 self?.signOut()
             }
             .store(in: &cancellables)
-        
+
         deleteUserSubject
-            .sink  {  [weak self] in
+            .sink {  [weak self] in
                 self?.deleteUser()
             }
             .store(in: &cancellables)
     }
-    
+
     private func deleteUser() {
         Task {
             do {
@@ -74,7 +73,7 @@ final class WelcomeViewModel {
             }
         }
     }
-    
+
     private func signOut() {
         signOutUseCase.execute()
     }

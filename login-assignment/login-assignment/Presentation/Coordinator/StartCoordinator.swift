@@ -85,14 +85,14 @@ final class StartCoordinator: Coordinator, Finishable {
         let viewController: WelcomeViewController = WelcomeViewController(
             viewModel: viewModel
         )
-        
+
         viewModel.signOutPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] in
                 self?.navigationController.popViewController(animated: true)
             }
             .store(in: &viewController.cancellables)
-        
+
         viewModel.deleteUserResultPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
@@ -102,7 +102,7 @@ final class StartCoordinator: Coordinator, Finishable {
                 }
             }
             .store(in: &viewController.cancellables)
-        
+
         navigationController.pushViewController(viewController, animated: true)
     }
 }
