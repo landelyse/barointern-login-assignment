@@ -10,7 +10,7 @@ import Combine
 
 final class StartViewController: UIViewController {
     private let viewModel: StartViewModel
-    var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
+    var cancellables: Set<AnyCancellable> = []
     private var contentView: StartUIView!
 
     init(viewModel: StartViewModel) {
