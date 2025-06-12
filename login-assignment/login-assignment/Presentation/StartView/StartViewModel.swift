@@ -27,10 +27,6 @@ final class StartViewModel {
     }
 
     func startButtonTapped() {
-#if DEBUG
-        print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
-#endif
-
         if navigationUseCase.execute() {
             navigateToWelcomeSubject.send(())
         } else {
