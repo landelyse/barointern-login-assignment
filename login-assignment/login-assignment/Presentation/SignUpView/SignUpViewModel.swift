@@ -20,7 +20,7 @@ final class SignUpViewModel {
 
     private let signUpButtonSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
     private let signUpResultSubject: PassthroughSubject<Result<Void, Error>, Never> = {
-        PassthroughSubject<Result<Void, Error>, Never>
+        PassthroughSubject<Result<Void, Error>, Never>()
     }()
     private let navigateToSignInSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
 
