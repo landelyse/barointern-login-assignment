@@ -46,22 +46,30 @@ final class StartCoordinator: Coordinator, Finishable {
     }
 
     func showSignIn() {
-        print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
-        let coreDataStack: CoreDataStack = CoreDataStack<UserEntity>()
-        let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
         let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
-        let useCase: SignInUseCase = SignInUseCase(userRepository: userRepository , preferenceRepository: preferenceRepository)
-        let viewModel: SignInViewModel = SignInViewModel(useCase: useCase)
-        let viewController: SignInViewController = SignInViewController(viewModel: viewModel)
-        navigationController.setViewControllers([viewController], animated: true)
+        let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
+        let useCase: SignInUseCase = SignInUseCase(userRepository: userRepository, preferenceRepository: preferenceRepository)
+        let authCoordinator: AuthCoordinator = AuthCoordinator(
+            navigationController: navigationController,
+            signInUseCase: useCase,
+            coreDataStack: coreDataStack
+        )
+
+        authCoordinator.isCompleted = { [weak self, weak authCoordinator] in
+            guard let coordinator = authCoordinator,
+                  let self = self
+            else { return }
+            self.removeChildCoordinator(coordinator)
+        }
+
+        coordinate(to: authCoordinator)
     }
 
     func showWelcome() {
-        print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
         let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
         let useCase: SignUpUseCase = SignUpUseCase(userRepository: userRepository)
         let viewModel: SignUpViewModel = SignUpViewModel(useCase: useCase)
         let viewController: SignUpViewController = SignUpViewController(viewModel: viewModel)
-        navigationController.setViewControllers([viewController], animated: true)
+        navigationController.pushViewController(viewController, animated: true)
     }
 }

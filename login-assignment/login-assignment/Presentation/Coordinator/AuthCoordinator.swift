@@ -12,56 +12,71 @@ final class AuthCoordinator: Coordinator, Finishable {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     var isCompleted: (() -> Void)?
-    private let useCase: StartNavigationUseCase
+    private let signInUseCase: SignInUseCase
     private let coreDataStack: CoreDataStack<UserEntity>
 
     init(
         navigationController: UINavigationController,
-        useCase: StartNavigationUseCase,
+        signInUseCase: SignInUseCase,
         coreDataStack: CoreDataStack<UserEntity>
     ) {
         self.navigationController = navigationController
-        self.useCase = useCase
+        self.signInUseCase = signInUseCase
         self.coreDataStack = coreDataStack
     }
 
     func start() {
-        let viewModel: StartViewModel = StartViewModel(navigationUseCase: useCase)
-        let viewController: StartViewController = StartViewController(viewModel: viewModel)
+        let viewModel: SignInViewModel = SignInViewModel(useCase: signInUseCase)
+        let viewController: SignInViewController = SignInViewController(viewModel: viewModel)
 
-        viewModel.navigateToSignInPublisher
+        viewModel.navigateSignUpPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                self?.showSignIn()
+            .sink {  [weak self] in
+                self?.showSignUp()
             }
             .store(in: &viewController.cancellables)
-
-        viewModel.navigateToWelcomePublisher
+        viewModel.signInResultPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                self?.showWelcome()
+            .sink {  [weak self] result in
+                switch result {
+                case .success():
+                    self?.showWelcome()
+                case .failure(_): break // TODO: 에러처리
+                }
             }
             .store(in: &viewController.cancellables)
         navigationController.pushViewController(viewController, animated: true)
     }
 
-    func showSignIn() {
-        print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
-        let coreDataStack: CoreDataStack = CoreDataStack<UserEntity>()
-        let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
-        let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
-        let useCase: SignInUseCase = SignInUseCase(userRepository: userRepository , preferenceRepository: preferenceRepository)
-        let viewModel: SignInViewModel = SignInViewModel(useCase: useCase)
-        let viewController: SignInViewController = SignInViewController(viewModel: viewModel)
-        navigationController.setViewControllers([viewController], animated: true)
-    }
-
-    func showWelcome() {
+    func showSignUp() {
         print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
         let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
         let useCase: SignUpUseCase = SignUpUseCase(userRepository: userRepository)
         let viewModel: SignUpViewModel = SignUpViewModel(useCase: useCase)
         let viewController: SignUpViewController = SignUpViewController(viewModel: viewModel)
-        navigationController.setViewControllers([viewController], animated: true)
+        
+        viewModel.signUpResultPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {  [weak self] result in
+                switch result {
+                case .success(): self?.navigationController.popViewController(animated: true)
+                case .failure(_):
+                    print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
+                    break
+                }
+            }
+            .store(in: &viewController.cancellables)
+        
+        viewModel.navigateToSignInPublisher
+            .receive(on: DispatchQueue.main)
+            .sink {  [weak self] in
+                self?.navigationController.popViewController(animated: true)
+            }
+            .store(in: &viewController.cancellables)
+        navigationController.pushViewController(viewController, animated: true)
+    }
+
+    func showWelcome() {
+        print("welcome view 미구현")
     }
 }
