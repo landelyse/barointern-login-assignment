@@ -12,28 +12,28 @@ final class SignInViewController: UIViewController {
     private var contentView: SignInUIView!
     var cancellables: Set<AnyCancellable> = []
     private let viewModel: SignInViewModel
-    
+
     init(viewModel: SignInViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder) 미구현")
     }
-    
+
     override func loadView() {
         contentView = SignInUIView()
         view = contentView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewCallbacks()
         bindTextField()
         bindViewModel()
     }
-    
+
     private func setupViewCallbacks() {
         contentView.onSignInButtonTapped = { [weak self] in
             guard let self = self else { return }
@@ -44,7 +44,7 @@ final class SignInViewController: UIViewController {
             self.viewModel.signUpButtonTapped()
         }
     }
-    
+
     private func bindTextField() {
         contentView.emailTextField
             .textPublisher
@@ -57,7 +57,7 @@ final class SignInViewController: UIViewController {
             .assign(to: \.password, on: viewModel)
             .store(in: &cancellables)
     }
-    
+
     private func bindViewModel() {
         viewModel.isSignInButtonEnabled
             .receive(on: DispatchQueue.main)

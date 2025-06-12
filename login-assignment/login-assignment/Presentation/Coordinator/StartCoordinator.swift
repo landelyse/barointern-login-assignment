@@ -48,7 +48,10 @@ final class StartCoordinator: Coordinator, Finishable {
     func showSignIn() {
         let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
         let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
-        let useCase: SignInUseCase = SignInUseCase(userRepository: userRepository, preferenceRepository: preferenceRepository)
+        let useCase: SignInUseCase = SignInUseCase(
+            userRepository: userRepository,
+            preferenceRepository: preferenceRepository
+        )
         let authCoordinator: AuthCoordinator = AuthCoordinator(
             navigationController: navigationController,
             signInUseCase: useCase,

@@ -14,11 +14,11 @@ final class CoreDataStack<T: NSManagedObject> {
 
     init() {
         self.persistentContainer = NSPersistentContainer(name: containerName)
-        persistentContainer.loadPersistentStores { [weak self] (storeDescription, error) in
+        persistentContainer.loadPersistentStores { [weak self] (_, error) in
                  if let error = error as NSError? {
                      fatalError("Unresolved error \(error), \(error.userInfo)")
                  }
-                 
+
                  // stores가 로드된 후에 background context 생성
                  self?.backgroundContext = self?.persistentContainer.newBackgroundContext()
                  self?.setupContext()

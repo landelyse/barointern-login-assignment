@@ -19,7 +19,7 @@ final class AppCoordinator: Coordinator {
         self.window = window
         self.navigationController = UINavigationController()
         self.coreDataStack = CoreDataStack<UserEntity>()
-        
+
         setupWindow()
     }
 

@@ -11,17 +11,19 @@ import Combine
 final class SignUpViewModel {
     private let signUpUseCase: SignUpUseCase
     private var cancellables: Set<AnyCancellable> = []
-    
+
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
     @Published var nickname: String = ""
     @Published private(set) var isLoading: Bool = false
-    
+
     private let signUpButtonSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
-    private let signUpResultSubject: PassthroughSubject<Result<Void, Error>, Never> = PassthroughSubject<Result<Void, Error>, Never>()
+    private let signUpResultSubject: PassthroughSubject<Result<Void, Error>, Never> = {
+        PassthroughSubject<Result<Void, Error>, Never>
+    }()
     private let navigateToSignInSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
-    
+
     var signUpButtonPublisher: AnyPublisher<Void, Never> {
         signUpButtonSubject.eraseToAnyPublisher()
     }
@@ -46,20 +48,20 @@ final class SignUpViewModel {
     var navigateToSignInPublisher: AnyPublisher<Void, Never> {
         navigateToSignInSubject.eraseToAnyPublisher()
     }
-    
+
     init(useCase: SignUpUseCase) {
         self.signUpUseCase = useCase
         bind()
     }
-    
+
     func signUpButtonTapped() {
         signUpButtonSubject.send(())
     }
-    
+
     func signInButtonTapped() {
         navigateToSignInSubject.send(())
     }
-    
+
     private func bind() {
         signUpButtonSubject
             .filter { [weak self] in
@@ -71,10 +73,10 @@ final class SignUpViewModel {
             }
             .store(in: &cancellables)
     }
-    
+
     private func signUp() {
         isLoading = true
-        
+
         Task {
             defer { self.isLoading = false}
             do {
@@ -86,5 +88,5 @@ final class SignUpViewModel {
             }
         }
     }
-    
+
 }

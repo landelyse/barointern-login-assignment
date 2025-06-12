@@ -49,7 +49,10 @@ final class WelcomeCoordinator: Coordinator, Finishable {
         print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
         let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
         let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
-        let useCase: SignInUseCase = SignInUseCase(userRepository: userRepository , preferenceRepository: preferenceRepository)
+        let useCase: SignInUseCase = SignInUseCase(
+            userRepository: userRepository,
+            preferenceRepository: preferenceRepository
+        )
         let viewModel: SignInViewModel = SignInViewModel(useCase: useCase)
         let viewController: SignInViewController = SignInViewController(viewModel: viewModel)
         navigationController.setViewControllers([viewController], animated: true)

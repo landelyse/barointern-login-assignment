@@ -39,9 +39,9 @@ final class AuthCoordinator: Coordinator, Finishable {
             .receive(on: DispatchQueue.main)
             .sink {  [weak self] result in
                 switch result {
-                case .success():
+                case .success:
                     self?.showWelcome()
-                case .failure(_): break // TODO: 에러처리
+                case .failure: break // TODO: 에러처리
                 }
             }
             .store(in: &viewController.cancellables)
@@ -54,19 +54,18 @@ final class AuthCoordinator: Coordinator, Finishable {
         let useCase: SignUpUseCase = SignUpUseCase(userRepository: userRepository)
         let viewModel: SignUpViewModel = SignUpViewModel(useCase: useCase)
         let viewController: SignUpViewController = SignUpViewController(viewModel: viewModel)
-        
+
         viewModel.signUpResultPublisher
             .receive(on: DispatchQueue.main)
             .sink {  [weak self] result in
                 switch result {
-                case .success(): self?.navigationController.popViewController(animated: true)
-                case .failure(_):
+                case .success: self?.navigationController.popViewController(animated: true)
+                case .failure:
                     print("[\((#file as NSString).lastPathComponent)] [\(#function): \(#line)] - ")
-                    break
                 }
             }
             .store(in: &viewController.cancellables)
-        
+
         viewModel.navigateToSignInPublisher
             .receive(on: DispatchQueue.main)
             .sink {  [weak self] in
