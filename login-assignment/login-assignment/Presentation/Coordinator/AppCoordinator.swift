@@ -11,13 +11,15 @@ import UIKit
 final class AppCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var  navigationController: UINavigationController
+    private let coreDataStack: CoreDataStack<UserEntity>
 
     private let window: UIWindow
 
     init(window: UIWindow) {
         self.window = window
         self.navigationController = UINavigationController()
-
+        self.coreDataStack = CoreDataStack<UserEntity>()
+        
         setupWindow()
     }
 
@@ -35,7 +37,8 @@ final class AppCoordinator: Coordinator {
         let useCase: StartNavigationUseCase = StartNavigationUseCase(preferenceRepository: repository)
         let startCoordinator: StartCoordinator = StartCoordinator(
             navigationController: navigationController,
-            useCase: useCase
+            useCase: useCase,
+            coreDataStack: coreDataStack
         )
 
         startCoordinator.isCompleted = { [weak self, weak startCoordinator] in
