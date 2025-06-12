@@ -10,12 +10,19 @@ import CoreData
 final class CoreDataStack<T: NSManagedObject> {
     private let containerName: String = "UserModel"
     private let persistentContainer: NSPersistentContainer
-    private let backgroundContext: NSManagedObjectContext
+    private var backgroundContext: NSManagedObjectContext!
 
     init() {
         self.persistentContainer = NSPersistentContainer(name: containerName)
-        self.backgroundContext = persistentContainer.newBackgroundContext()
-        setupContext()
+        persistentContainer.loadPersistentStores { [weak self] (_, error) in
+                 if let error = error as NSError? {
+                     fatalError("Unresolved error \(error), \(error.userInfo)")
+                 }
+
+                 // stores가 로드된 후에 background context 생성
+                 self?.backgroundContext = self?.persistentContainer.newBackgroundContext()
+                 self?.setupContext()
+             }
     }
 
     @discardableResult
