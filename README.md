@@ -91,7 +91,8 @@
 <!-- <img width="1002" alt="Screenshot 2025-06-10 at 04 58 00" src="https://github.com/user-attachments/assets/2110530c-9ff1-44c7-ad0d-c4e68adbfd24" />
 <img width="1002" alt="Screenshot 2025-06-10 at 13 17 59" src="https://github.com/user-attachments/assets/3e9655ae-f2eb-497b-b569-625d442f89a9" /> -->
 <!--![바로인턴+04  직무과제  2025-06-11 10 33 51 excalidraw](https://github.com/user-attachments/assets/9cd80308-33d6-42ee-9caf-df84e2343606)-->
-![의존성 업데이트](https://github.com/user-attachments/assets/f652f799-6a99-41b5-b158-d0060044e70d)
+![의존성 그래프](https://github.com/user-attachments/assets/03fa06c0-a9e2-48fd-95cc-1b18c412226d)
+
 
 
 
