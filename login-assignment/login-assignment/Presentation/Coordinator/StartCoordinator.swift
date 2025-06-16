@@ -12,21 +12,27 @@ final class StartCoordinator: Coordinator, Finishable {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     var isCompleted: (() -> Void)?
-    private let useCase: StartNavigationUseCase
+    private let navigateUseCase: StartNavigationUseCase
+    private let userInfoUseCase: UserInfoUseCase
     private let coreDataStack: CoreDataStack<UserEntity>
 
     init(
         navigationController: UINavigationController,
-        useCase: StartNavigationUseCase,
+        navigateUseCase: StartNavigationUseCase,
+        userInfoUseCase: UserInfoUseCase,
         coreDataStack: CoreDataStack<UserEntity>
     ) {
         self.navigationController = navigationController
-        self.useCase = useCase
+        self.navigateUseCase = navigateUseCase
+        self.userInfoUseCase = userInfoUseCase
         self.coreDataStack = coreDataStack
     }
 
     func start() {
-        let viewModel: StartViewModel = StartViewModel(navigationUseCase: useCase)
+        let viewModel: StartViewModel = StartViewModel(
+            navigationUseCase: navigateUseCase,
+            userInfoUseCase: userInfoUseCase
+        )
         let viewController: StartViewController = StartViewController(viewModel: viewModel)
 
         viewModel.navigateToSignInPublisher
@@ -38,8 +44,8 @@ final class StartCoordinator: Coordinator, Finishable {
 
         viewModel.navigateToWelcomePublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                self?.showWelcome()
+            .sink { [weak self] name in
+                self?.showWelcome(name: name)
             }
             .store(in: &viewController.cancellables)
         navigationController.pushViewController(viewController, animated: true)
@@ -48,13 +54,15 @@ final class StartCoordinator: Coordinator, Finishable {
     func showSignIn() {
         let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
         let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
-        let useCase: SignInUseCase = SignInUseCase(
+        let signInUseCase: SignInUseCase = SignInUseCase(
             userRepository: userRepository,
             preferenceRepository: preferenceRepository
         )
+        let userInfoUserCase: UserInfoUseCase = UserInfoUseCase(preferenceRepository: preferenceRepository)
         let authCoordinator: AuthCoordinator = AuthCoordinator(
             navigationController: navigationController,
-            signInUseCase: useCase,
+            signInUseCase: signInUseCase,
+            userInfoUseCase: userInfoUserCase,
             coreDataStack: coreDataStack
         )
 
@@ -68,7 +76,7 @@ final class StartCoordinator: Coordinator, Finishable {
         coordinate(to: authCoordinator)
     }
 
-    func showWelcome() {
+    func showWelcome(name: String) {
         let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
         let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
         let deleteUserUseCase: DeleteUserUseCase = DeleteUserUseCase(
@@ -83,7 +91,8 @@ final class StartCoordinator: Coordinator, Finishable {
             deleteUserUseCase: deleteUserUseCase
         )
         let viewController: WelcomeViewController = WelcomeViewController(
-            viewModel: viewModel
+            viewModel: viewModel,
+            name: name
         )
 
         viewModel.signOutPublisher

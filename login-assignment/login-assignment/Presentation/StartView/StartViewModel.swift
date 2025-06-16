@@ -11,26 +11,29 @@ import Foundation
 @MainActor
 final class StartViewModel {
     private let navigationUseCase: StartNavigationUseCase
+    private let userInfoUseCase: UserInfoUseCase
 
-    private let navigateToWelcomeSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
+    private let navigateToWelcomeSubject: PassthroughSubject<String, Never> = PassthroughSubject<String, Never>()
     private let navigateToSignInSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
 
-    var navigateToWelcomePublisher: AnyPublisher<Void, Never> {
+    var navigateToWelcomePublisher: AnyPublisher<String, Never> {
         navigateToWelcomeSubject.eraseToAnyPublisher()
     }
     var navigateToSignInPublisher: AnyPublisher<Void, Never> {
         navigateToSignInSubject.eraseToAnyPublisher()
     }
 
-    init(navigationUseCase: StartNavigationUseCase) {
+    init(navigationUseCase: StartNavigationUseCase, userInfoUseCase: UserInfoUseCase) {
         self.navigationUseCase = navigationUseCase
+        self.userInfoUseCase = userInfoUseCase
     }
 
     func startButtonTapped() {
-        if navigationUseCase.execute() {
-            navigateToWelcomeSubject.send()
-        } else {
+        guard navigationUseCase.execute(),
+              let name = try? userInfoUseCase.getNickName() else {
             navigateToSignInSubject.send()
+            return
         }
+        navigateToWelcomeSubject.send(name)
     }
 }

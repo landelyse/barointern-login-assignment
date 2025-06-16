@@ -34,10 +34,12 @@ final class AppCoordinator: Coordinator {
 
     private func showStartFlow() {
         let repository: PreferenceRepository = UserDefaultsPreferenceRepository()
-        let useCase: StartNavigationUseCase = StartNavigationUseCase(preferenceRepository: repository)
+        let navigateUseCase: StartNavigationUseCase = StartNavigationUseCase(preferenceRepository: repository)
+        let userInfoUseCase: UserInfoUseCase = UserInfoUseCase(preferenceRepository: repository)
         let startCoordinator: StartCoordinator = StartCoordinator(
             navigationController: navigationController,
-            useCase: useCase,
+            navigateUseCase: navigateUseCase,
+            userInfoUseCase: userInfoUseCase,
             coreDataStack: coreDataStack
         )
 

@@ -13,20 +13,26 @@ final class AuthCoordinator: Coordinator, Finishable {
     var navigationController: UINavigationController
     var isCompleted: (() -> Void)?
     private let signInUseCase: SignInUseCase
+    private let userInfoUseCase: UserInfoUseCase
     private let coreDataStack: CoreDataStack<UserEntity>
 
     init(
         navigationController: UINavigationController,
         signInUseCase: SignInUseCase,
+        userInfoUseCase: UserInfoUseCase,
         coreDataStack: CoreDataStack<UserEntity>
     ) {
         self.navigationController = navigationController
         self.signInUseCase = signInUseCase
+        self.userInfoUseCase = userInfoUseCase
         self.coreDataStack = coreDataStack
     }
 
     func start() {
-        let viewModel: SignInViewModel = SignInViewModel(useCase: signInUseCase)
+        let viewModel: SignInViewModel = SignInViewModel(
+            signInUseCase: signInUseCase,
+            userInfoUseCase: userInfoUseCase
+        )
         let viewController: SignInViewController = SignInViewController(viewModel: viewModel)
 
         viewModel.navigateSignUpPublisher
@@ -39,8 +45,8 @@ final class AuthCoordinator: Coordinator, Finishable {
             .receive(on: DispatchQueue.main)
             .sink {  [weak self] result in
                 switch result {
-                case .success:
-                    self?.showWelcome()
+                case .success(let name):
+                    self?.showWelcome(name: name)
                 case .failure: break // TODO: 에러처리
                 }
             }
@@ -73,7 +79,7 @@ final class AuthCoordinator: Coordinator, Finishable {
         navigationController.pushViewController(viewController, animated: true)
     }
 
-    func showWelcome() {
+    func showWelcome(name: String) {
         let preferenceRepository: PreferenceRepository = UserDefaultsPreferenceRepository()
         let userRepository: UserRepository = CoreDataUserRepository(coreDataStack: coreDataStack)
         let deleteUserUseCase: DeleteUserUseCase = DeleteUserUseCase(
@@ -88,7 +94,8 @@ final class AuthCoordinator: Coordinator, Finishable {
             deleteUserUseCase: deleteUserUseCase
         )
         let viewController: WelcomeViewController = WelcomeViewController(
-            viewModel: viewModel
+            viewModel: viewModel,
+            name: name
         )
 
         viewModel.signOutPublisher
