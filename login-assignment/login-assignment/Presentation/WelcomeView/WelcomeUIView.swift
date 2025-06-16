@@ -10,10 +10,11 @@ import UIKit
 final class WelcomeUIView: UIView {
     var onSignOutButtonTapped: (() -> Void)?
     var onDeleteButtonTapped: (() -> Void)?
+    private let userName: String
 
     private let titleLabel: UILabel = {
         let label: UILabel = UILabel()
-        label.text = "Welcome!"
+        label.text = "Welcome user!"
         label.textAlignment = .center
         label.font = .systemFont(ofSize: UIMetric.FontSize.title)
         label.textColor = .black
@@ -50,8 +51,9 @@ final class WelcomeUIView: UIView {
         return button
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(name: String) {
+        self.userName = name
+        super.init(frame: .zero )
         setUpUI()
         setupConstraints()
         setupButtonAction()
@@ -71,6 +73,7 @@ final class WelcomeUIView: UIView {
         ].forEach {
             addSubview($0)
         }
+        self.titleLabel.text = "Welcome \(self.userName)!"
     }
 
     private func setupConstraints() {

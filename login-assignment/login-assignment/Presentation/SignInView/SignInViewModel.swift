@@ -10,6 +10,7 @@ import Combine
 @MainActor
 final class SignInViewModel {
     private let signInUseCase: SignInUseCase
+    private let userInfoUseCase: UserInfoUseCase
     private var cancellables: Set<AnyCancellable> = []
 
     @Published var email: String = ""
@@ -17,8 +18,8 @@ final class SignInViewModel {
     @Published private(set) var isLoading: Bool = false
 
     private let signInButtonSubject: PassthroughSubject<Void, Never> = PassthroughSubject<Void, Never>()
-    private let signInResultSubject: PassthroughSubject<Result<Void, Error>, Never> = {
-        PassthroughSubject<Result<Void, Error>, Never>()
+    private let signInResultSubject: PassthroughSubject<Result<String, Error>, Never> = {
+        PassthroughSubject<Result<String, Error>, Never>()
     }()
     private let navigateToSignUpSubject: PassthroughSubject<Void, Never> = {
         PassthroughSubject<Void, Never>()
@@ -27,7 +28,7 @@ final class SignInViewModel {
     var signInButtonPublisher: AnyPublisher<Void, Never> {
         signInButtonSubject.eraseToAnyPublisher()
     }
-    var signInResultPublisher: AnyPublisher<Result<Void, Error>, Never> {
+    var signInResultPublisher: AnyPublisher<Result<String, Error>, Never> {
         signInResultSubject.eraseToAnyPublisher()
     }
     var isSignInButtonEnabled: AnyPublisher<Bool, Never> {
@@ -47,8 +48,9 @@ final class SignInViewModel {
         navigateToSignUpSubject.eraseToAnyPublisher()
     }
 
-    init(useCase: SignInUseCase) {
-        self.signInUseCase = useCase
+    init(signInUseCase: SignInUseCase, userInfoUseCase: UserInfoUseCase) {
+        self.signInUseCase = signInUseCase
+        self.userInfoUseCase = userInfoUseCase
         bind()
     }
 
@@ -77,7 +79,7 @@ final class SignInViewModel {
             defer { self.isLoading = false }
             do {
                 try await signInUseCase.execute(email: email, password: password)
-                signInResultSubject.send(.success(()))
+                signInResultSubject.send(.success(try userInfoUseCase.getNickName()))
             } catch {
                 signInResultSubject.send(.failure(error))
             }

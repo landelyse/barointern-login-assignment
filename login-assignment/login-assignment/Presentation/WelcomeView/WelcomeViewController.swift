@@ -12,9 +12,11 @@ final class WelcomeViewController: UIViewController {
     private var contentView: WelcomeUIView!
     var cancellables: Set<AnyCancellable> = []
     private let viewModel: WelcomeViewModel
+    private let userName: String
 
-    init(viewModel: WelcomeViewModel) {
+    init(viewModel: WelcomeViewModel, name: String) {
         self.viewModel = viewModel
+        self.userName = name
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -23,7 +25,7 @@ final class WelcomeViewController: UIViewController {
     }
 
     override func loadView() {
-        contentView = WelcomeUIView()
+        contentView = WelcomeUIView(name: userName)
         view = contentView
     }
 
